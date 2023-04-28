@@ -72,7 +72,11 @@ def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_me
 	if "https://t.me/+" in message.text or "https://t.me/joinchat/" in message.text:
 
 		if acc is None:
-			bot.send_message(message.chat.id,f"**String Session is not Set**", reply_to_message_id=message.id)
+			bot.send_message(
+				message.chat.id,
+				"**String Session is not Set**",
+				reply_to_message_id=message.id,
+			)
 			return
 
 		try:
@@ -85,8 +89,7 @@ def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_me
 			bot.send_message(message.chat.id,"**Chat alredy Joined**", reply_to_message_id=message.id)
 		except InviteHashExpired:
 			bot.send_message(message.chat.id,"**Invalid Link**", reply_to_message_id=message.id)
-	
-	# getting message
+
 	elif "https://t.me/" in message.text:
 
 		datas = message.text.split("/")
@@ -94,21 +97,28 @@ def save(client: pyrogram.client.Client, message: pyrogram.types.messages_and_me
 
 		# private
 		if "https://t.me/c/" in message.text:
-			chatid = int("-100" + datas[-2])
+			chatid = int(f"-100{datas[-2]}")
 			if acc is None:
-				bot.send_message(message.chat.id,f"**String Session is not Set**", reply_to_message_id=message.id)
+				bot.send_message(
+					message.chat.id,
+					"**String Session is not Set**",
+					reply_to_message_id=message.id,
+				)
 				return
 			try: handle_private(message,chatid,msgid)
 			except Exception as e: bot.send_message(message.chat.id,f"**Error** : __{e}__", reply_to_message_id=message.id)
-		
-		# public
+
 		else:
 			username = datas[-2]
 			msg  = bot.get_messages(username,msgid)
 			try: bot.copy_message(message.chat.id, msg.chat.id, msg.id)
 			except:
 				if acc is None:
-					bot.send_message(message.chat.id,f"**String Session is not Set**", reply_to_message_id=message.id)
+					bot.send_message(
+						message.chat.id,
+						"**String Session is not Set**",
+						reply_to_message_id=message.id,
+					)
 					return
 				try: handle_private(message,username,msgid)
 				except Exception as e: bot.send_message(message.chat.id,f"**Error** : __{e}__", reply_to_message_id=message.id)
